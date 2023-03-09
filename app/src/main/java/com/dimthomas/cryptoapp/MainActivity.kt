@@ -21,8 +21,10 @@ class MainActivity : AppCompatActivity() {
         binding.textHelloWorld.text = "Test binding"
 
         viewModel = ViewModelProvider(this)[CoinViewModel::class.java]
-        viewModel.loadData()
-        viewModel.priceList.observe(this, Observer {
+//        viewModel.priceList.observe(this, Observer {
+//            Log.d("TEST_OF_LOADING_DATA", "Success in activity: $it")
+//        })
+        viewModel.getDetailInfo("BTC").observe(this, Observer {
             Log.d("TEST_OF_LOADING_DATA", "Success in activity: $it")
         })
     }
