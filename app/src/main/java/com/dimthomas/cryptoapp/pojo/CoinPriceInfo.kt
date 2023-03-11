@@ -1,9 +1,9 @@
 package com.dimthomas.cryptoapp.pojo
 
-import android.provider.SyncStateContract.Constants
-import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.dimthomas.cryptoapp.api.ApiFactory.BASE_IMAGE_URL
+import com.dimthomas.cryptoapp.utils.convertTimestampToTime
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
@@ -33,11 +33,11 @@ data class CoinPriceInfo (
 
     @SerializedName("PRICE")
     @Expose
-    val price: Double?,
+    val price: String?,
 
     @SerializedName("LASTUPDATE")
     @Expose
-    val lastUpdate: Int?,
+    val lastUpdate: Long?,
 
     @SerializedName("LASTVOLUME")
     @Expose
@@ -166,4 +166,12 @@ data class CoinPriceInfo (
     @SerializedName("IMAGEURL")
     @Expose
     val imageUrl: String?
-)
+) {
+    fun getFormattedTime(): String {
+        return convertTimestampToTime(lastUpdate)
+    }
+
+    fun getFullImageUrl(): String {
+        return BASE_IMAGE_URL + imageUrl
+    }
+}
