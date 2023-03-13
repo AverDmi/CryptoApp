@@ -28,5 +28,6 @@ class CoinPriceListActivity : AppCompatActivity() {
         viewModel.priceList.observe(this, Observer {
             adapter.coinInfoList = it
         })
+        //Test git from Android Studio
     }
 }
