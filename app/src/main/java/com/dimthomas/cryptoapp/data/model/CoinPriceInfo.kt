@@ -1,8 +1,8 @@
-package com.dimthomas.cryptoapp.pojo
+package com.dimthomas.cryptoapp.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.dimthomas.cryptoapp.api.ApiFactory.BASE_IMAGE_URL
+import com.dimthomas.cryptoapp.data.network.ApiFactory.BASE_IMAGE_URL
 import com.dimthomas.cryptoapp.utils.convertTimestampToTime
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

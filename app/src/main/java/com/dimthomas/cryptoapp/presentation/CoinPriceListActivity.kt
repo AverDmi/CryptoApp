@@ -1,11 +1,12 @@
-package com.dimthomas.cryptoapp
+package com.dimthomas.cryptoapp.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.dimthomas.cryptoapp.adapters.CoinInfoAdapter
-import com.dimthomas.cryptoapp.pojo.CoinPriceInfo
+import com.dimthomas.cryptoapp.R
+import com.dimthomas.cryptoapp.presentation.adapters.CoinInfoAdapter
+import com.dimthomas.cryptoapp.data.model.CoinPriceInfo
 import kotlinx.android.synthetic.main.activity_coin_price_list.*
 
 class CoinPriceListActivity : AppCompatActivity() {
@@ -18,7 +19,10 @@ class CoinPriceListActivity : AppCompatActivity() {
         val adapter = CoinInfoAdapter(this)
         adapter.onCoinClickListener = object : CoinInfoAdapter.OnCoinClickListener {
             override fun onCoinClick(coinPriceInfo: CoinPriceInfo) {
-                val intent = CoinDetailActivity.newIntent(this@CoinPriceListActivity, coinPriceInfo.fromSymbol)
+                val intent = CoinDetailActivity.newIntent(
+                    this@CoinPriceListActivity,
+                    coinPriceInfo.fromSymbol
+                )
                 startActivity(intent)
             }
         }

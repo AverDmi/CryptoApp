@@ -1,7 +1,7 @@
-package com.dimthomas.cryptoapp.api
+package com.dimthomas.cryptoapp.data.network
 
-import com.dimthomas.cryptoapp.pojo.CoinInfoListOfData
-import com.dimthomas.cryptoapp.pojo.CoinPriceInfoRawData
+import com.dimthomas.cryptoapp.data.model.CoinInfoListOfData
+import com.dimthomas.cryptoapp.data.model.CoinPriceInfoRawData
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query

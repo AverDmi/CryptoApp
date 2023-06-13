@@ -1,4 +1,4 @@
-package com.dimthomas.cryptoapp.pojo
+package com.dimthomas.cryptoapp.data.model
 
 import android.media.Rating
 import com.google.gson.annotations.Expose
