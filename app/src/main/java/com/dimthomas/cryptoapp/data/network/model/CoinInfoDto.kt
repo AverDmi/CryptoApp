@@ -73,11 +73,11 @@ data class CoinInfoDto (
 
     @SerializedName("HIGHDAY")
     @Expose
-    val highDay: Double?,
+    val highDay: String?,
 
     @SerializedName("LOWDAY")
     @Expose
-    val lowDay: Double?,
+    val lowDay: String?,
 
     @SerializedName("OPEN24HOUR")
     @Expose

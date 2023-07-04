@@ -2,9 +2,8 @@ package com.dimthomas.cryptoapp.data.repository
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.MediatorLiveData
 import com.dimthomas.cryptoapp.data.database.AppDatabase
-import com.dimthomas.cryptoapp.data.database.CoinInfoDao
 import com.dimthomas.cryptoapp.data.mapper.CoinMapper
 import com.dimthomas.cryptoapp.data.network.ApiFactory
 import com.dimthomas.cryptoapp.domain.CoinInfo
@@ -20,31 +19,31 @@ class CoinRepositoryImpl(
 
     private val mapper = CoinMapper()
 
-    override fun getCoinInfoList(): LiveData<List<CoinInfo>> {
-        return Transformations.map(coinInfoDao.getPriceList()) {
-            it.map {
+    override fun getCoinInfoList(): LiveData<List<CoinInfo>>  = MediatorLiveData<List<CoinInfo>>().apply {
+        addSource(coinInfoDao.getPriceList()) {
+            value = it.map {
                 mapper.mapDbModelToEntity(it)
             }
         }
     }
 
-    override fun getCoinInfo(fromSymbol: String): LiveData<CoinInfo> {
-        return Transformations.map(coinInfoDao.getPriceInfoAboutCoin(fromSymbol)) {
-            mapper.mapDbModelToEntity(it)
-        }
-    }
+    override fun getCoinInfo(fromSymbol: String): LiveData<CoinInfo> = MediatorLiveData<CoinInfo>().apply {
+        addSource(coinInfoDao.getPriceInfoAboutCoin(fromSymbol)) {
+            value = mapper.mapDbModelToEntity(it)
+    }}
 
     override suspend fun loadData() {
-
         while (true) {
-            val topCoins = apiService.getTopCoinsInfo(limit = 50)
-            val fSyms = mapper.mapNamesListToString(topCoins)
-            val jsonContainer = apiService.getFullPriceList(fSyms = fSyms)
-            val coinInfoDtoList = mapper.mapJsonContainerToListCoiInfo(jsonContainer)
-            val dbModelList = coinInfoDtoList.map { mapper.mapDtoToDbModel(it) }
-            coinInfoDao.insertPriceList(dbModelList)
+            try {
+                val topCoins = apiService.getTopCoinsInfo(limit = 50)
+                val fSyms = mapper.mapNamesListToString(topCoins)
+                val jsonContainer = apiService.getFullPriceList(fSyms = fSyms)
+                val coinInfoDtoList = mapper.mapJsonContainerToListCoiInfo(jsonContainer)
+                val dbModelList = coinInfoDtoList.map { mapper.mapDtoToDbModel(it) }
+                coinInfoDao.insertPriceList(dbModelList)
+            } catch (e: Exception) {
+            }
             delay(10000)
         }
     }
-
 }

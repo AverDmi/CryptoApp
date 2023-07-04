@@ -7,13 +7,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.dimthomas.cryptoapp.R
-import com.dimthomas.cryptoapp.data.network.model.CoinInfoDto
+import com.dimthomas.cryptoapp.data.network.ApiFactory.BASE_IMAGE_URL
+import com.dimthomas.cryptoapp.domain.CoinInfo
+import com.dimthomas.cryptoapp.utils.convertTimestampToTime
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_coin_info.view.*
 
 class CoinInfoAdapter(private val context: Context): Adapter<CoinInfoAdapter.CoinInfoViewHolder>() {
 
-    var coinInfoList: List<CoinInfoDto> = listOf()
+    var coinInfoList: List<CoinInfo> = listOf()
     set(value) {
         field = value
         notifyDataSetChanged()
@@ -42,8 +44,8 @@ class CoinInfoAdapter(private val context: Context): Adapter<CoinInfoAdapter.Coi
                 val lastUpdateTemplate = context.resources.getString(R.string.last_update_template)
                 tvSymbols.text =String.format(symbolsTemplate, fromSymbol, toSymbol)
                 tvPrice.text = price
-                tvLastUpdate.text = String.format(lastUpdateTemplate, getFormattedTime())
-                Picasso.get().load(getFullImageUrl()).into(ivLogoCoin)
+                tvLastUpdate.text = String.format(lastUpdateTemplate, convertTimestampToTime(lastUpdate))
+                Picasso.get().load(BASE_IMAGE_URL + imageUrl).into(ivLogoCoin)
                 itemView.setOnClickListener {
                     onCoinClickListener?.onCoinClick(this)
                 }
@@ -54,6 +56,6 @@ class CoinInfoAdapter(private val context: Context): Adapter<CoinInfoAdapter.Coi
     override fun getItemCount() = coinInfoList.size
 
     interface OnCoinClickListener {
-        fun onCoinClick(coinPriceInfo: CoinInfoDto)
+        fun onCoinClick(coinPriceInfo: CoinInfo)
     }
 }
